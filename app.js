@@ -7,6 +7,22 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+//create connection
+const mysql = require('mysql')
+const db = mysql.createConnection({
+  host:'localhost',
+  user:'root',
+  password:'',
+  database:'chihtu_service'
+})
+
+db.connect((err)=>{
+  if(err)
+    throw err;
+  console.log('success connected')
+})
+
+
 var app = express();
 
 // view engine setup
