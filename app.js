@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+//新增資料表
 var user_m = require('./model/user')
 user_m.sync();
 user_m.create({
