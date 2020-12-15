@@ -7,21 +7,18 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-//create connection
-const mysql = require('mysql')
-const db = mysql.createConnection({
-  host:'localhost',
-  user:'root',
-  password:'',
-  database:'chihtu_service'
-})
-
-db.connect((err)=>{
-  if(err)
-    throw err;
-  console.log('success connected')
-})
-
+var user_m = require('./model/user')
+user_m.sync();
+user_m.create({
+  content: '我是公告內容。',
+  title: '系統公告的標題',
+  gmId: '10086',
+  status: 0,
+  expireDate: 1527396599123,
+  startDate: Date.now()
+}).then((data) => {
+  res.json({ code: 0, msg: '公告發布成功', result: data });
+});
 
 var app = express();
 
@@ -39,12 +36,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
